@@ -1,0 +1,50 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Test Constructores
+      id: test-constructores
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test Constructores
+        setup-command: ''
+        command: gradle test --tests *TestConstructores
+        timeout: 10
+        max-score: 10
+    - name: Test Atributos
+      id: test-atributos
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test Atributos
+        setup-command: ''
+        command: gradle test --tests *TestAtributos
+        timeout: 10
+        max-score: 20
+    - name: Test Metodos
+      id: test-metodos
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test Metodos
+        setup-command: ''
+        command: gradle test --tests *TestMetodos
+        timeout: 10
+        max-score: 20
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST-CONSTRUCTORES_RESULTS: "${{steps.test-constructores.outputs.result}}"
+        TEST-ATRIBUTOS_RESULTS: "${{steps.test-atributos.outputs.result}}"
+        TEST-METODOS_RESULTS: "${{steps.test-metodos.outputs.result}}"
+      with:
+        runners: test-constructores,test-atributos,test-metodos
