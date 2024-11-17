@@ -17,7 +17,6 @@ public class Marca {
 }
 
 package taller3.televisores;
-import taller3.televisores.*;
 
 public class TV {
     private Marca marca;
