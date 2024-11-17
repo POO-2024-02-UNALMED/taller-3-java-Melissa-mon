@@ -3,16 +3,88 @@ package taller3.televisores;
 public class Marca {
     private String nombre;
 
+    // Constructor
     public Marca(String nombre) {
         this.nombre = nombre;
     }
 
+    // Métodos getters y setters
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+}
+
+package taller3.televisores;
+
+public class Control {
+    private TV tv;
+
+    // Método para enlazar el control con un televisor
+    public void enlazar(TV tv) {
+        this.tv = tv;
+        tv.setControl(this);
+    }
+
+    // Métodos de control remoto
+    public void turnOn() {
+        if (tv != null) {
+            tv.turnOn();
+        }
+    }
+
+    public void turnOff() {
+        if (tv != null) {
+            tv.turnOff();
+        }
+    }
+
+    public void canalUp() {
+        if (tv != null) {
+            tv.canalUp();
+        }
+    }
+
+    public void canalDown() {
+        if (tv != null) {
+            tv.canalDown();
+        }
+    }
+
+    public void volumenUp() {
+        if (tv != null) {
+            tv.volumenUp();
+        }
+    }
+
+    public void volumenDown() {
+        if (tv != null) {
+            tv.volumenDown();
+        }
+    }
+
+    public void setCanal(int canal) {
+        if (tv != null) {
+            tv.setCanal(canal);
+        }
+    }
+
+    public void setVolumen(int volumen) {
+        if (tv != null) {
+            tv.setVolumen(volumen);
+        }
+    }
+
+    // Getters y setters
+    public TV getTv() {
+        return tv;
+    }
+
+    public void setTv(TV tv) {
+        this.tv = tv;
     }
 }
 
@@ -25,17 +97,21 @@ public class TV {
     private boolean estado;
     private int volumen;
     private Control control;
+    
+    // Atributo estático para contar la cantidad de televisores creados
     private static int numTV = 0;
 
+    // Constructor
     public TV(Marca marca, boolean estado) {
         this.marca = marca;
         this.estado = estado;
-        this.canal = 1;  // valor por defecto
-        this.volumen = 1;  // valor por defecto
-        this.precio = 500;  // valor por defecto
-        numTV++;
+        this.canal = 1;
+        this.volumen = 1;
+        this.precio = 500;
+        numTV++; // Aumentar el contador de televisores
     }
 
+    // Métodos setters y getters
     public Marca getMarca() {
         return marca;
     }
@@ -62,10 +138,6 @@ public class TV {
         this.precio = precio;
     }
 
-    public boolean getEstado() {
-        return estado;
-    }
-
     public int getVolumen() {
         return volumen;
     }
@@ -84,22 +156,23 @@ public class TV {
         this.control = control;
     }
 
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void turnOn() {
+        this.estado = true;
+    }
+
+    public void turnOff() {
+        this.estado = false;
+    }
+
     public static int getNumTV() {
         return numTV;
     }
 
-    public static void setNumTV(int numTV) {
-        TV.numTV = numTV;
-    }
-
-    public void turnOn() {
-        estado = true;
-    }
-
-    public void turnOff() {
-        estado = false;
-    }
-
+    // Métodos para controlar el canal
     public void canalUp() {
         if (estado && canal < 120) {
             canal++;
@@ -112,6 +185,7 @@ public class TV {
         }
     }
 
+    // Métodos para controlar el volumen
     public void volumenUp() {
         if (estado && volumen < 7) {
             volumen++;
@@ -123,88 +197,47 @@ public class TV {
             volumen--;
         }
     }
-}
 
-package taller3.televisores;
-
-public class Control {
-    private TV tv;
-
-    public TV getTv() {
-        return tv;
-    }
-
-    public void setTv(TV tv) {
-        this.tv = tv;
-    }
-
-    public void enlazar(TV tv) {
-        this.tv = tv;
-        tv.setControl(this);
-    }
-
-    public void turnOn() {
-        tv.turnOn();
-    }
-
-    public void turnOff() {
-        tv.turnOff();
-    }
-
-    public void canalUp() {
-        tv.canalUp();
-    }
-
-    public void canalDown() {
-        tv.canalDown();
-    }
-
-    public void volumenUp() {
-        tv.volumenUp();
-    }
-
-    public void volumenDown() {
-        tv.volumenDown();
-    }
-
-    public void setCanal(int canal) {
-        tv.setCanal(canal);
-    }
-
-    public void setVolumen(int volumen) {
-        tv.setVolumen(volumen);
+    // Método para obtener el estado del televisor
+    public boolean getEstado() {
+        return estado;
     }
 }
 
 package taller3.televisores;
 
 public class TestTV {
-
     public static void main(String[] args) {
+        // Crear marca
         Marca marca1 = new Marca("Samsung");
-        TV tv1 = new TV(marca1, false);
 
-        tv1.turnOn();
-        System.out.println(tv1.getEstado());  // Debería imprimir: true
+        // Crear televisores
+        TV tv1 = new TV(marca1, true);  // Televisor encendido
+        TV tv2 = new TV(marca1, false); // Televisor apagado
 
-        tv1.setCanal(50);
-        System.out.println(tv1.getCanal());  // Debería imprimir: 50
-
+        // Crear controles remotos
         Control control1 = new Control();
-        control1.enlazar(tv1);
+        control1.enlazar(tv1); // Enlazar control con el televisor
 
-        control1.turnOff();
-        System.out.println(tv1.getEstado());  // Debería imprimir: false
+        // Mostrar número de televisores creados
+        System.out.println("Número de televisores creados: " + TV.getNumTV());
 
-        control1.turnOn();
-        System.out.println(tv1.getEstado());  // Debería imprimir: true
+        // Usar el control remoto para cambiar el canal y volumen
+        System.out.println("Canal actual TV1: " + tv1.getCanal());
+        control1.canalUp();
+        System.out.println("Canal después de subir: " + tv1.getCanal());
 
-        control1.setCanal(100);
-        System.out.println(tv1.getCanal());  // Debería imprimir: 100
-
+        System.out.println("Volumen actual TV1: " + tv1.getVolumen());
         control1.volumenUp();
-        System.out.println(tv1.getVolumen());  // Debería imprimir: 2
+        System.out.println("Volumen después de subir: " + tv1.getVolumen());
 
-        System.out.println(TV.getNumTV());  // Debería imprimir el número de televisores creados
+        // Apagar el televisor
+        control1.turnOff();
+        System.out.println("Estado de TV1 después de apagar: " + tv1.getEstado());
+
+        // Intentar cambiar el canal cuando está apagado
+        control1.canalDown();
+        System.out.println("Canal después de intentar bajar estando apagado: " + tv1.getCanal());
     }
 }
+
