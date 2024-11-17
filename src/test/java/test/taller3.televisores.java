@@ -30,9 +30,9 @@ public class TV {
     public TV(Marca marca, boolean estado) {
         this.marca = marca;
         this.estado = estado;
-        this.canal = 1;
-        this.volumen = 1;
-        this.precio = 500;
+        this.canal = 1;  // valor por defecto
+        this.volumen = 1;  // valor por defecto
+        this.precio = 500;  // valor por defecto
         numTV++;
     }
 
@@ -208,4 +208,3 @@ public class TestTV {
         System.out.println(TV.getNumTV());  // Debería imprimir el número de televisores creados
     }
 }
-
